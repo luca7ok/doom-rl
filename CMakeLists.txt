@@ -17,10 +17,27 @@ FetchContent_Declare(
   GIT_TAG 1.3.2
   GIT_SHALLOW TRUE
 )
-FetchContent_MakeAvailable(vizdoom)
+set(YAML_CPP_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(YAML_CPP_BUILD_TOOLS OFF CACHE BOOL "" FORCE)
+set(YAML_CPP_BUILD_CONTRIB OFF CACHE BOOL "" FORCE)
+FetchContent_Declare(
+  yaml-cpp
+  GIT_REPOSITORY https://github.com/jbeder/yaml-cpp.git
+  GIT_TAG 0.8.0
+  GIT_SHALLOW TRUE
+)
+FetchContent_MakeAvailable(vizdoom yaml-cpp)
 
 find_package(OpenCV REQUIRED COMPONENTS core imgproc highgui videoio)
 
-add_executable(doom_rl src/main.cpp)
-target_include_directories(doom_rl PRIVATE ${vizdoom_SOURCE_DIR}/include)
-target_link_libraries(doom_rl PRIVATE libvizdoom_static ${OpenCV_LIBS})
+add_executable(doom_rl
+  src/main.cpp
+  src/Config.cpp
+)
+target_include_directories(doom_rl PRIVATE include ${vizdoom_SOURCE_DIR}/include)
+target_compile_definitions(doom_rl PRIVATE
+  VIZDOOM_ENGINE_PATH="${CMAKE_BINARY_DIR}/bin/vizdoom"
+  VIZDOOM_IWAD_PATH="${vizdoom_SOURCE_DIR}/src/freedoom2.wad"
+  VIZDOOM_SCENARIOS_DIR="${vizdoom_SOURCE_DIR}/scenarios"
+)
+target_link_libraries(doom_rl PRIVATE libvizdoom_static yaml-cpp::yaml-cpp ${OpenCV_LIBS})
