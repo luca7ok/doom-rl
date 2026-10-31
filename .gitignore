@@ -1,0 +1,15 @@
+build/
+runs/
+.cache/
+compile_commands.json
+*.mp4
+*.pt
+*.pth
+*.ckpt
+*.log
+*.o
+*.a
+*.so
+.vscode/
+.idea/
+.DS_Store
