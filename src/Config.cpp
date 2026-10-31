@@ -7,20 +7,22 @@ namespace doomrl {
     EnvConfig loadEnvConfig(const std::string& path) {
         const YAML::Node config = YAML::LoadFile(path);
 
-        const std::string scenario = config["scenario"].as<std::string>();
-        const int frameSkip = config["frame_skip"].as<int>();
-        const bool render = config["render"].as<bool>();
+        EnvConfig result;
+        result.scenario = config["scenario"].as<std::string>(result.scenario);
+        result.frameSkip = config["frame_skip"].as<int>(result.frameSkip);
+        result.render = config["render"].as<bool>(result.render);
 
-        return EnvConfig{scenario, frameSkip, render};
+        return result;
     }
 
     AgentConfig loadAgentConfig(const std::string& path) {
         const YAML::Node config = YAML::LoadFile(path);
 
-        const std::string type = config["type"].as<std::string>();
-        const int seed = config["seed"].as<int>();
-        const int episodes = config["episodes"].as<int>();
+        AgentConfig result;
+        result.type = config["type"].as<std::string>(result.type);
+        result.seed = config["seed"].as<int>(result.seed);
+        result.episodes = config["episodes"].as<int>(result.episodes);
 
-        return AgentConfig{type, seed, episodes};
+        return result;
     }
 }  // namespace doomrl
