@@ -1,0 +1,3 @@
+scenario: basic
+frame_skip: 4
+render: true
