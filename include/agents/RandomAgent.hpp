@@ -2,7 +2,7 @@
 
 #include <random>
 
-#include "Agent.hpp"
+#include "agents/Agent.hpp"
 
 namespace doomrl {
     class RandomAgent : public Agent {

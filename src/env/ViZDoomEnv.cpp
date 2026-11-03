@@ -1,14 +1,10 @@
-#include "ViZDoomEnv.hpp"
+#include "env/ViZDoomEnv.hpp"
 
 #include <chrono>
-#include <opencv2/core/mat.hpp>
 #include <stdexcept>
 #include <thread>
 
-#include "Config.hpp"
-#include "Environment.hpp"
-#include "Utils.hpp"
-#include "ViZDoomConsts.h"
+#include "util/Utils.hpp"
 #include "ViZDoomTypes.h"
 
 namespace doomrl {

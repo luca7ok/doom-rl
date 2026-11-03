@@ -1,4 +1,4 @@
-#include "RandomAgent.hpp"
+#include "agents/RandomAgent.hpp"
 
 namespace doomrl {
     RandomAgent::RandomAgent(int numActions, int seed)

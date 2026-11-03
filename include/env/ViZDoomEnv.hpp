@@ -1,10 +1,9 @@
 #pragma once
 
-#include <opencv2/core/mat.hpp>
 #include <vector>
 
-#include "Config.hpp"
-#include "Environment.hpp"
+#include "config/Config.hpp"
+#include "env/Environment.hpp"
 #include "ViZDoomGame.h"
 
 namespace doomrl {
