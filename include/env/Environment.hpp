@@ -17,6 +17,8 @@ namespace doomrl {
 
         virtual cv::Mat reset() = 0;
 
+        virtual bool closed() const { return false; }
+
         virtual ~Environment() = default;
     };
 }  // namespace doomrl

@@ -23,6 +23,10 @@ namespace doomrl {
                 observation = result.observation;
                 total += result.reward;
                 done = result.done;
+
+                if (env.closed()) {
+                    return stats;
+                }
             }
 
             stats.rewards.push_back(total);
