@@ -1,3 +1,11 @@
+ifeq (run,$(firstword $(MAKECMDGOALS)))
+  RUN_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+  $(eval $(RUN_ARGS):;@:)
+endif
+
+ENV_NAME := $(word 1,$(RUN_ARGS))
+AGENT_NAME := $(word 2,$(RUN_ARGS))
+
 .PHONY: build run clean
 
 build: build/build.ninja
@@ -8,7 +16,7 @@ build/build.ninja:
 
 run: build
 	@clear
-	./build/doom_rl $(ARGS)
+	./build/doom_rl $(if $(ENV_NAME),--env $(ENV_NAME)) $(if $(AGENT_NAME),--agent $(AGENT_NAME))
 
 clean:
 	rm -rf build

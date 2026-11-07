@@ -13,3 +13,5 @@ compile_commands.json
 .vscode/
 .idea/
 .DS_Store
+_vizdoom/
+_vizdoom.ini
