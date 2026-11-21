@@ -10,7 +10,7 @@ namespace doomrl {
         return std::accumulate(rewards.begin(), rewards.end(), 0.0) / rewards.size();
     }
 
-    EpisodeStats runEpisodes(Environment& env, Agent& agent, int episodes) {
+    EpisodeStats runEpisodes(Environment& env, Agent& agent, int episodes, Logger& logger) {
         EpisodeStats stats;
 
         for (int episode = 0; episode < episodes; episode++) {
@@ -30,6 +30,7 @@ namespace doomrl {
             }
 
             stats.rewards.push_back(total);
+            logger.log("episode ", episode + 1, ": reward ", total);
         }
 
         return stats;

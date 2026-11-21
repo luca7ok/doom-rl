@@ -1,3 +1,4 @@
+#include <filesystem>
 #include <iostream>
 
 #include "agents/AgentRegistry.hpp"
@@ -5,6 +6,8 @@
 #include "config/Config.hpp"
 #include "env/ViZDoomEnv.hpp"
 #include "run/Runner.hpp"
+#include "util/Logger.hpp"
+#include "util/Utils.hpp"
 
 using namespace doomrl;
 
@@ -14,15 +17,16 @@ int main(int argc, char** argv) {
         const EnvConfig envConfig = loadEnvConfig("configs/env/" + args.env + ".yaml");
         const AgentConfig agentConfig = loadAgentConfig("configs/agent/" + args.agent + ".yaml");
 
+        const std::string runDir = "runs/" + args.env + "/" + args.agent + "/" + timestamp();
+        std::filesystem::create_directories(runDir);
+        Logger logger(runDir + "/run.log");
+
         ViZDoomEnv env(envConfig, static_cast<unsigned>(agentConfig.seed));
         auto agent = AgentRegistry::instance().make(agentConfig, env.numActions());
 
-        const EpisodeStats stats = runEpisodes(env, *agent, agentConfig.episodes);
+        const EpisodeStats stats = runEpisodes(env, *agent, agentConfig.episodes, logger);
 
-        for (size_t i = 0; i < stats.rewards.size(); i++) {
-            std::cout << "episode " << i + 1 << ": reward " << stats.rewards[i] << '\n';
-        }
-        std::cout << "mean reward " << stats.mean() << '\n';
+        logger.log("mean reward ", stats.mean());
     } catch (const std::exception& e) {
         std::cerr << "error: " << e.what() << '\n';
         return 1;
