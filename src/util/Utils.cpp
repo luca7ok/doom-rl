@@ -1,6 +1,9 @@
 #include "util/Utils.hpp"
 
+#include <ctime>
 #include <filesystem>
+#include <iomanip>
+#include <sstream>
 #include <stdexcept>
 
 namespace doomrl {
@@ -17,5 +20,12 @@ namespace doomrl {
         }
 
         throw std::runtime_error("scenario not found: " + name);
+    }
+
+    std::string timestamp() {
+        const std::time_t now = std::time(nullptr);
+        std::ostringstream out;
+        out << std::put_time(std::localtime(&now), "%Y-%m-%d_%H-%M-%S");
+        return out.str();
     }
 }  // namespace doomrl
