@@ -55,7 +55,13 @@ namespace doomrl {
         cv::resize(frame, bigWindow, {}, windowScale, windowScale, cv::INTER_NEAREST);
         cv::cvtColor(bigWindow, bigWindow, cv::COLOR_RGB2BGR);
         cv::imshow(windowName, bigWindow);
-        cv::waitKey(1);
+
+        const int key = cv::waitKey(1);
+        if (key == 'q') {
+            cv::destroyWindow(windowName);
+            windowClosed = true;
+            return;
+        }
 
         if (cv::getWindowProperty(windowName, cv::WND_PROP_VISIBLE) < 1) {
             windowClosed = true;
