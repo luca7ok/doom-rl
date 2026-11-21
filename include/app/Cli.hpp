@@ -4,6 +4,7 @@
 
 namespace doomrl {
     struct CliArgs {
+        std::string mode;
         std::string env = "basic";
         std::string agent = "random";
     };

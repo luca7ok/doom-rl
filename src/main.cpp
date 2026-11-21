@@ -14,12 +14,14 @@ using namespace doomrl;
 int main(int argc, char** argv) {
     try {
         const CliArgs args = parseArgs(argc, argv);
-        const EnvConfig envConfig = loadEnvConfig("configs/env/" + args.env + ".yaml");
+        EnvConfig envConfig = loadEnvConfig("configs/env/" + args.env + ".yaml");
+        envConfig.render = args.mode == "run";
         const AgentConfig agentConfig = loadAgentConfig("configs/agent/" + args.agent + ".yaml");
 
         const std::string runDir = "runs/" + args.env + "/" + args.agent + "/" + timestamp();
         std::filesystem::create_directories(runDir);
         Logger logger(runDir + "/run.log");
+        logger.log("mode ", args.mode, ", env ", args.env, ", agent ", args.agent);
 
         ViZDoomEnv env(envConfig, static_cast<unsigned>(agentConfig.seed));
         auto agent = AgentRegistry::instance().make(agentConfig, env.numActions());

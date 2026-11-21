@@ -1,12 +1,13 @@
-ifeq (run,$(firstword $(MAKECMDGOALS)))
+ifneq (,$(filter run train,$(firstword $(MAKECMDGOALS))))
   RUN_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
   $(eval $(RUN_ARGS):;@:)
 endif
 
 ENV_NAME := $(word 1,$(RUN_ARGS))
 AGENT_NAME := $(word 2,$(RUN_ARGS))
+DOOM_ARGS := $(if $(ENV_NAME),--env $(ENV_NAME)) $(if $(AGENT_NAME),--agent $(AGENT_NAME))
 
-.PHONY: build run clean
+.PHONY: build run train clean
 
 build: build/build.ninja
 	@cmake --build build > build/last_build.log 2>&1 || { cat build/last_build.log; exit 1; }
@@ -16,7 +17,11 @@ build/build.ninja:
 
 run: build
 	@clear
-	./build/doom_rl $(if $(ENV_NAME),--env $(ENV_NAME)) $(if $(AGENT_NAME),--agent $(AGENT_NAME))
+	./build/doom_rl run $(DOOM_ARGS)
+
+train: build
+	@clear
+	./build/doom_rl train $(DOOM_ARGS)
 
 clean:
 	rm -rf build

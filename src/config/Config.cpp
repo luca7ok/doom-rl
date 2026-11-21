@@ -10,7 +10,6 @@ namespace doomrl {
         EnvConfig result;
         result.scenario = config["scenario"].as<std::string>(result.scenario);
         result.frameSkip = config["frame_skip"].as<int>(result.frameSkip);
-        result.render = config["render"].as<bool>(result.render);
 
         return result;
     }
