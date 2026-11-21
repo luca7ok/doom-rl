@@ -18,10 +18,11 @@ int main(int argc, char** argv) {
         envConfig.render = args.mode == "run";
         const AgentConfig agentConfig = loadAgentConfig("configs/agent/" + args.agent + ".yaml");
 
-        const std::string runDir = "runs/" + args.env + "/" + args.agent + "/" + timestamp();
+        const std::string runDir = "runs/" + args.env + "/" + args.agent;
         std::filesystem::create_directories(runDir);
         Logger logger(runDir + "/run.log");
-        logger.log("mode ", args.mode, ", env ", args.env, ", agent ", args.agent);
+        logger.log("=== ", timestamp(), " mode ", args.mode, ", env ", args.env, ", agent ",
+                   args.agent);
 
         ViZDoomEnv env(envConfig, static_cast<unsigned>(agentConfig.seed));
         auto agent = AgentRegistry::instance().make(agentConfig, env.numActions());

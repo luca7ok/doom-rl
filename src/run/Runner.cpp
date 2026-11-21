@@ -2,6 +2,10 @@
 
 #include <numeric>
 
+namespace {
+    constexpr int logEvery = 50;
+}  // namespace
+
 namespace doomrl {
     double EpisodeStats::mean() const {
         if (rewards.empty()) {
@@ -30,7 +34,9 @@ namespace doomrl {
             }
 
             stats.rewards.push_back(total);
-            logger.log("episode ", episode + 1, ": reward ", total);
+            if (episode % logEvery == 0) {
+                logger.log("episode ", episode, ": reward ", total);
+            }
         }
 
         return stats;

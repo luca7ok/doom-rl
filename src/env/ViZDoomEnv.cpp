@@ -10,6 +10,7 @@
 
 namespace {
     constexpr const char* windowName = "doom-rl";
+    constexpr double windowScale = 3.0;
 }  // namespace
 
 namespace doomrl {
@@ -51,7 +52,7 @@ namespace doomrl {
 
     void ViZDoomEnv::show(const cv::Mat& frame) {
         cv::Mat bigWindow;
-        cv::resize(frame, bigWindow, {}, 3.0, 3.0, cv::INTER_NEAREST);
+        cv::resize(frame, bigWindow, {}, windowScale, windowScale, cv::INTER_NEAREST);
         cv::cvtColor(bigWindow, bigWindow, cv::COLOR_RGB2BGR);
         cv::imshow(windowName, bigWindow);
         cv::waitKey(1);
