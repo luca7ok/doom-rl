@@ -68,6 +68,11 @@ namespace doomrl {
         }
     }
 
+    void ViZDoomEnv::waitForNextTic() {
+        nextTic += std::chrono::microseconds(1'000'000 / vizdoom::DEFAULT_TICRATE);
+        std::this_thread::sleep_until(nextTic);
+    }
+
     int ViZDoomEnv::numActions() const {
         return static_cast<int>(actions.size());
     }
@@ -82,22 +87,31 @@ namespace doomrl {
         cv::Mat frame = currentFrame();
         if (render && !windowClosed) {
             show(frame);
+            nextTic = std::chrono::steady_clock::now();
         }
         return frame;
     }
 
     StepResult ViZDoomEnv::step(int action) {
-        const double reward = game.makeAction(actions.at(action), frameSkip);
-        const bool done = game.isEpisodeFinished();
-        cv::Mat frame = currentFrame();
-
-        if (render && !windowClosed) {
-            show(frame);
-            std::this_thread::sleep_for(
-                std::chrono::milliseconds(frameSkip * 1000 / vizdoom::DEFAULT_TICRATE));
+        if (!render || windowClosed) {
+            const double reward = game.makeAction(actions.at(action), frameSkip);
+            return StepResult{static_cast<float>(reward), game.isEpisodeFinished(), currentFrame()};
         }
 
-        return StepResult{static_cast<float>(reward), done, frame};
+        game.setAction(actions.at(action));
+        double reward = 0.0;
+        for (int tic = 0; tic < frameSkip && !windowClosed; tic++) {
+            game.advanceAction(1);
+            reward += game.getLastReward();
+
+            if (game.isEpisodeFinished()) {
+                break;
+            }
+            show(currentFrame());
+            waitForNextTic();
+        }
+
+        return StepResult{static_cast<float>(reward), game.isEpisodeFinished(), currentFrame()};
     }
 
     ViZDoomEnv::~ViZDoomEnv() {

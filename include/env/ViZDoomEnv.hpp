@@ -1,5 +1,6 @@
 #pragma once
 
+#include <chrono>
 #include <vector>
 
 #include "ViZDoomGame.h"
@@ -14,10 +15,13 @@ namespace doomrl {
         int frameSkip;
         bool render;
         bool windowClosed = false;
+        std::chrono::steady_clock::time_point nextTic;
 
         cv::Mat currentFrame();
 
         void show(const cv::Mat& frame);
+
+        void waitForNextTic();
 
     public:
         ViZDoomEnv(const EnvConfig& config, unsigned seed);
