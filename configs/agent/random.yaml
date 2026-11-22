@@ -1,3 +1,6 @@
 type: random
 seed: 0
-episodes: 5
+train:
+  episodes: 200
+run:
+  episodes: 5

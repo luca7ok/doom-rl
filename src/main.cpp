@@ -27,7 +27,8 @@ int main(int argc, char** argv) {
         ViZDoomEnv env(envConfig, static_cast<unsigned>(agentConfig.seed));
         auto agent = AgentRegistry::instance().make(agentConfig, env.numActions());
 
-        const EpisodeStats stats = runEpisodes(env, *agent, agentConfig.episodes, logger);
+        const ModeConfig& mode = args.mode == "train" ? agentConfig.train : agentConfig.run;
+        const EpisodeStats stats = runEpisodes(env, *agent, mode.episodes, logger);
 
         logger.log("mean reward ", stats.mean());
     } catch (const std::exception& e) {

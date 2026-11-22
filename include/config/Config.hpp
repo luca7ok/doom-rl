@@ -9,10 +9,15 @@ namespace doomrl {
         bool render = false;
     };
 
+    struct ModeConfig {
+        int episodes = 1;
+    };
+
     struct AgentConfig {
         std::string type = "random";
         int seed = 0;
-        int episodes = 1;
+        ModeConfig train{1000};
+        ModeConfig run{5};
     };
 
     EnvConfig loadEnvConfig(const std::string& path);

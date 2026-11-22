@@ -2,6 +2,15 @@
 
 #include "yaml-cpp/yaml.h"
 
+namespace {
+    doomrl::ModeConfig loadModeConfig(const YAML::Node& node, doomrl::ModeConfig result) {
+        if (node) {
+            result.episodes = node["episodes"].as<int>(result.episodes);
+        }
+        return result;
+    }
+}  // namespace
+
 namespace doomrl {
 
     EnvConfig loadEnvConfig(const std::string& path) {
@@ -20,7 +29,8 @@ namespace doomrl {
         AgentConfig result;
         result.type = config["type"].as<std::string>(result.type);
         result.seed = config["seed"].as<int>(result.seed);
-        result.episodes = config["episodes"].as<int>(result.episodes);
+        result.train = loadModeConfig(config["train"], result.train);
+        result.run = loadModeConfig(config["run"], result.run);
 
         return result;
     }
