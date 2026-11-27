@@ -45,6 +45,7 @@ add_executable(doom_rl
   src/util/Utils.cpp
   src/util/Logger.cpp
   src/env/ViZDoomEnv.cpp
+  src/env/EnvWrapper.cpp
   src/agents/RandomAgent.cpp
   src/agents/AgentRegistry.cpp
   src/app/Cli.cpp
