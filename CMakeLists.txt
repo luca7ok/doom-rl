@@ -9,6 +9,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 include(FetchContent)
+set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 set(BUILD_PYTHON OFF CACHE BOOL "" FORCE)
 set(BUILD_ENGINE ON CACHE BOOL "" FORCE)
 FetchContent_Declare(
@@ -46,14 +47,22 @@ add_executable(doom_rl
   src/util/Logger.cpp
   src/env/ViZDoomEnv.cpp
   src/env/EnvWrapper.cpp
+  src/env/PreprocessEnv.cpp
+  src/env/FrameStackEnv.cpp
   src/agents/RandomAgent.cpp
   src/agents/AgentRegistry.cpp
   src/app/Cli.cpp
   src/run/Runner.cpp
 )
+if(APPLE)
+  set(VIZDOOM_ENGINE "${CMAKE_BINARY_DIR}/bin/vizdoom.app/Contents/MacOS/vizdoom")
+else()
+  set(VIZDOOM_ENGINE "${CMAKE_BINARY_DIR}/bin/vizdoom")
+endif()
+
 target_include_directories(doom_rl PRIVATE include ${vizdoom_SOURCE_DIR}/include)
 target_compile_definitions(doom_rl PRIVATE
-  VIZDOOM_ENGINE_PATH="${CMAKE_BINARY_DIR}/bin/vizdoom"
+  VIZDOOM_ENGINE_PATH="${VIZDOOM_ENGINE}"
   VIZDOOM_IWAD_PATH="${vizdoom_SOURCE_DIR}/src/freedoom2.wad"
   VIZDOOM_SCENARIOS_DIR="${vizdoom_SOURCE_DIR}/scenarios"
 )
