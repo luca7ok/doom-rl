@@ -14,18 +14,21 @@ namespace doomrl {
         return std::accumulate(rewards.begin(), rewards.end(), 0.0) / rewards.size();
     }
 
-    EpisodeStats runEpisodes(Environment& env, Agent& agent, int episodes, Logger& logger) {
+    EpisodeStats runEpisodes(Environment& env, Agent& agent, int episodes, Logger& logger,
+                             MetricsWriter& metrics) {
         EpisodeStats stats;
 
         for (int episode = 0; episode < episodes; episode++) {
             cv::Mat observation = env.reset();
             double total = 0.0;
+            int steps = 0;
             bool done = false;
 
             while (!done) {
                 const StepResult result = env.step(agent.act(observation));
                 observation = result.observation;
                 total += result.reward;
+                steps++;
                 done = result.done;
 
                 if (env.closed()) {
@@ -34,6 +37,7 @@ namespace doomrl {
             }
 
             stats.rewards.push_back(total);
+            metrics.write(episode, total, steps);
             if (episode % logEvery == 0) {
                 logger.log("episode ", episode, ": reward ", total);
             }

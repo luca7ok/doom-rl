@@ -5,6 +5,7 @@
 #include "agents/Agent.hpp"
 #include "env/Environment.hpp"
 #include "util/Logger.hpp"
+#include "util/MetricsWriter.hpp"
 
 namespace doomrl {
     struct EpisodeStats {
@@ -13,5 +14,6 @@ namespace doomrl {
         double mean() const;
     };
 
-    EpisodeStats runEpisodes(Environment& env, Agent& agent, int episodes, Logger& logger);
+    EpisodeStats runEpisodes(Environment& env, Agent& agent, int episodes, Logger& logger,
+                             MetricsWriter& metrics);
 }  // namespace doomrl

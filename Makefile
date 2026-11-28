@@ -15,7 +15,7 @@ else
   CXX_COMPILER := clang++-22
 endif
 
-.PHONY: build run train clean
+.PHONY: build run train plot clean
 
 build: build/build.ninja
 	@cmake --build build > build/last_build.log 2>&1 || { cat build/last_build.log; exit 1; }
@@ -30,6 +30,9 @@ run: build
 train: build
 	@clear
 	./build/doom_rl train $(DOOM_ARGS)
+
+plot:
+	@uv run --quiet --with pandas --with matplotlib scripts/plot.py
 
 clean:
 	rm -rf build

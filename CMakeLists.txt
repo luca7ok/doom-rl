@@ -45,6 +45,7 @@ add_executable(doom_rl
   src/config/Config.cpp
   src/util/Utils.cpp
   src/util/Logger.cpp
+  src/util/MetricsWriter.cpp
   src/env/ViZDoomEnv.cpp
   src/env/EnvWrapper.cpp
   src/env/PreprocessEnv.cpp
