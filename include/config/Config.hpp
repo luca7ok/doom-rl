@@ -16,6 +16,8 @@ namespace doomrl {
     struct AgentConfig {
         std::string type = "random";
         int seed = 0;
+        int obsSize = 84;
+        int frameStack = 4;
         ModeConfig train{1000};
         ModeConfig run{5};
     };

@@ -1,5 +1,7 @@
 type: random
 seed: 0
+obs_size: 84
+frame_stack: 4
 train:
   episodes: 200
 run:

@@ -29,6 +29,8 @@ namespace doomrl {
         AgentConfig result;
         result.type = config["type"].as<std::string>(result.type);
         result.seed = config["seed"].as<int>(result.seed);
+        result.obsSize = config["obs_size"].as<int>(result.obsSize);
+        result.frameStack = config["frame_stack"].as<int>(result.frameStack);
         result.train = loadModeConfig(config["train"], result.train);
         result.run = loadModeConfig(config["run"], result.run);
 
